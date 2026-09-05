@@ -1,0 +1,36 @@
+﻿@model GarmentWorkshop.Models.WorkerRate
+
+@{
+    ViewData["Title"] = "Add Worker Rate";
+}
+
+<h2>Add Worker Rate</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Worker</label>
+        <select asp-for="WorkerId" class="form-control" asp-items="ViewBag.WorkerId">
+            <option value="">-- Select Worker --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Garment</label>
+        <select asp-for="GarmentId" class="form-control" asp-items="ViewBag.GarmentId">
+            <option value="">-- Select Garment --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Rate Per Piece (₹)</label>
+        <input asp-for="RatePerPiece" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Effective From</label>
+        <input asp-for="EffectiveFrom" type="date" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

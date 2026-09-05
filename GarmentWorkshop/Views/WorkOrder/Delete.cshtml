@@ -1,0 +1,29 @@
+﻿@model GarmentWorkshop.Models.WorkOrder
+
+@{
+    ViewData["Title"] = "Delete Work Order";
+}
+
+<h2>Delete Work Order</h2>
+
+<p>Are you sure you want to delete this work order?</p>
+
+<dl class="row">
+    <dt class="col-sm-3">Party</dt>
+    <dd class="col-sm-9">@Model.Party.Name</dd>
+
+    <dt class="col-sm-3">Garment</dt>
+    <dd class="col-sm-9">@Model.Garment.Name</dd>
+
+    <dt class="col-sm-3">Total Pieces</dt>
+    <dd class="col-sm-9">@Model.TotalPieces</dd>
+
+    <dt class="col-sm-3">Party Rate</dt>
+    <dd class="col-sm-9">₹@Model.PartyRatePerPiece</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,181 @@
+﻿@model GarmentWorkshop.ViewModels.DailyEntryViewModel
+
+@{
+    ViewData["Title"] = "Daily Entry";
+}
+
+<h2>Daily Entry</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">@ViewBag.Message</div>
+}
+
+<ul class="nav nav-tabs" id="entryTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link @(ViewBag.ActiveTab == "production" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#production" type="button">Production</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link @(ViewBag.ActiveTab == "expense" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#expense" type="button">Expense</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link @(ViewBag.ActiveTab == "maintenance" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#maintenance" type="button">Maintenance</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link @(ViewBag.ActiveTab == "thread" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#thread" type="button">Thread</button>
+    </li>
+</ul>
+
+<div class="tab-content border border-top-0 p-3 mb-4">
+
+    <!-- Production Tab -->
+    <div class="tab-pane fade @(ViewBag.ActiveTab == "production" ? "show active" : "")" id="production">
+        <form asp-action="AddProduction" method="post">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Worker</label>
+                    <select name="WorkerId" class="form-control" asp-items="Model.Workers">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Work Order</label>
+                    <select name="WorkOrderId" class="form-control" asp-items="Model.WorkOrders">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Date</label>
+                    <input name="Date" type="date" class="form-control" value="@Model.ProductionEntry.Date.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Pieces</label>
+                    <input name="PiecesProduced" type="number" class="form-control" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Expense Tab -->
+    <div class="tab-pane fade @(ViewBag.ActiveTab == "expense" ? "show active" : "")" id="expense">
+        <form asp-action="AddExpense" method="post">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Category</label>
+                    <select name="ExpenseCategoryId" class="form-control" asp-items="Model.ExpenseCategories">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Date</label>
+                    <input name="Date" type="date" class="form-control" value="@Model.ExpenseEntry.Date.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Amount (₹)</label>
+                    <input name="Amount" type="number" step="0.01" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Note (optional)</label>
+                    <input name="Note" class="form-control" placeholder="e.g. Material pickup" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Maintenance Tab -->
+    <div class="tab-pane fade @(ViewBag.ActiveTab == "maintenance" ? "show active" : "")" id="maintenance">
+        <form asp-action="AddMaintenance" method="post">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Machine</label>
+                    <select name="MachineId" class="form-control" asp-items="Model.Machines">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Date</label>
+                    <input name="Date" type="date" class="form-control" value="@Model.MaintenanceEntry.Date.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Amount (₹)</label>
+                    <input name="Amount" type="number" step="0.01" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Note (optional)</label>
+                    <input name="Note" class="form-control" placeholder="e.g. Needle repair" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Thread Tab -->
+    <div class="tab-pane fade @(ViewBag.ActiveTab == "thread" ? "show active" : "")" id="thread">
+        <form asp-action="AddThread" method="post">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Thread Type</label>
+                    <select name="ThreadStockId" class="form-control" asp-items="Model.ThreadStocks">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Date</label>
+                    <input name="Date" type="date" class="form-control" value="@Model.ThreadEntry.Date.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Type</label>
+                    <select name="Type" class="form-control">
+                        <option value="Purchase">Purchase</option>
+                        <option value="Consumption">Consumption</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Quantity</label>
+                    <input name="Quantity" type="number" step="0.01" class="form-control" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<h4>Today's Entries</h4>
+
+@if (!Model.TodayEntries.Any())
+{
+    <p class="text-muted">No entries yet today.</p>
+}
+else
+{
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model.TodayEntries)
+            {
+                <tr>
+                    <td><span class="badge bg-secondary">@entry.Type</span></td>
+                    <td>@entry.Description</td>
+                    <td>@entry.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

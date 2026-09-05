@@ -1,0 +1,34 @@
+﻿@model GarmentWorkshop.Models.Production
+
+@{
+    ViewData["Title"] = "Edit Production";
+}
+
+<h2>Edit Production</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Worker</label>
+        <select asp-for="WorkerId" class="form-control" asp-items="ViewBag.WorkerId"></select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Work Order</label>
+        <select asp-for="WorkOrderId" class="form-control" asp-items="ViewBag.WorkOrderId"></select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Date</label>
+        <input asp-for="Date" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Pieces Produced</label>
+        <input asp-for="PiecesProduced" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

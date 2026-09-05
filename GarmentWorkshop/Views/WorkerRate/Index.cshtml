@@ -1,0 +1,38 @@
+﻿@model IEnumerable<GarmentWorkshop.Models.WorkerRate>
+
+@{
+    ViewData["Title"] = "Worker Rates";
+}
+
+<h2>Worker Rates</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">+ Add Rate</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Worker</th>
+            <th>Garment</th>
+            <th>Rate/Piece</th>
+            <th>Effective From</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rate in Model)
+        {
+            <tr>
+                <td>@rate.Worker.Name</td>
+                <td>@rate.Garment.Name</td>
+                <td>₹@rate.RatePerPiece</td>
+                <td>@rate.EffectiveFrom.ToString("dd-MMM-yyyy")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@rate.Id" class="btn btn-sm btn-secondary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@rate.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

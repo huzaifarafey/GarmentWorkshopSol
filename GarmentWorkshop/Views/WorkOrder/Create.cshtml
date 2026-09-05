@@ -1,0 +1,51 @@
+﻿@model GarmentWorkshop.Models.WorkOrder
+
+@{
+    ViewData["Title"] = "Add Work Order";
+}
+
+<h2>Add Work Order</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Party</label>
+        <select asp-for="PartyId" class="form-control" asp-items="ViewBag.PartyId">
+            <option value="">-- Select Party --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Garment</label>
+        <select asp-for="GarmentId" class="form-control" asp-items="ViewBag.GarmentId">
+            <option value="">-- Select Garment --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Total Pieces</label>
+        <input asp-for="TotalPieces" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Party Rate Per Piece (₹)</label>
+        <input asp-for="PartyRatePerPiece" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Start Date</label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Expected End Date (optional)</label>
+        <input asp-for="ExpectedEndDate" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<GarmentWorkshop.Models.WorkOrderStatus>()"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

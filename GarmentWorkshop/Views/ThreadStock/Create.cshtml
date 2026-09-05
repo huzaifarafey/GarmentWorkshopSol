@@ -1,0 +1,18 @@
+﻿@model GarmentWorkshop.Models.ThreadStock
+
+@{
+    ViewData["Title"] = "Add Thread Type";
+}
+
+<h2>Add Thread Type</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Color / Type</label>
+        <input asp-for="ColorOrType" class="form-control" placeholder="e.g. White, Black 40s" />
+        <span asp-validation-for="ColorOrType" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

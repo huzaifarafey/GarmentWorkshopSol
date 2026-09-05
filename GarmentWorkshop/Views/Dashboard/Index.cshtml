@@ -1,0 +1,139 @@
+﻿@model GarmentWorkshop.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Dashboard — @Model.PeriodLabel</h2>
+
+<div class="btn-group mb-4" role="group">
+    <a asp-action="Index" asp-route-period="today" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "today" ? "active" : "")">Today</a>
+    <a asp-action="Index" asp-route-period="week" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "week" ? "active" : "")">Week</a>
+    <a asp-action="Index" asp-route-period="15days" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "15days" ? "active" : "")">15 Days</a>
+    <a asp-action="Index" asp-route-period="month" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "month" ? "active" : "")">Month</a>
+</div>
+
+<form asp-action="Index" method="get" class="row g-2 mb-4">
+    <input type="hidden" name="period" value="custom" />
+    <div class="col-auto">
+        <input type="date" name="from" class="form-control" value="@Model.FromDate.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-auto">
+        <input type="date" name="to" class="form-control" value="@Model.ToDate.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-secondary">Custom Range</button>
+    </div>
+</form>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Total Pieces</h6>
+            <h3>@Model.TotalPiecesProduced</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Worker Payment</h6>
+            <h3>₹@Model.TotalWorkerPayment</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Total Expenses</h6>
+            <h3>₹@Model.TotalExpenses</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Estimated Profit</h6>
+            <h3 class="@(Model.EstimatedProfit >= 0 ? "text-success" : "text-danger")">₹@Model.EstimatedProfit</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Party Revenue</h6>
+            <h4>₹@Model.TotalPartyRevenue</h4>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Maintenance Cost</h6>
+            <h4>₹@Model.TotalMaintenance</h4>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Thread Used</h6>
+            <h4>@Model.ThreadUsedThisPeriod</h4>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Machines Active</h6>
+            <h4>@Model.ActiveMachinesCount / @Model.TotalMachinesCount</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Worker-wise Production</h4>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr><th>Worker</th><th>Pieces</th><th>Earning</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var w in Model.WorkerWiseProduction)
+                {
+                    <tr>
+                        <td>@w.WorkerName</td>
+                        <td>@w.Pieces</td>
+                        <td>₹@w.Earning</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Expenses by Category</h4>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr><th>Category</th><th>Amount</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var e in Model.ExpenseByCategory)
+                {
+                    <tr>
+                        <td>@e.CategoryName</td>
+                        <td>₹@e.Amount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<h4 class="mt-4">Pending Work Orders</h4>
+<table class="table table-sm table-striped">
+    <thead>
+        <tr><th>Party</th><th>Garment</th><th>Total</th><th>Completed</th><th>Pending</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var wo in Model.PendingWorkOrders)
+        {
+            <tr>
+                <td>@wo.PartyName</td>
+                <td>@wo.GarmentName</td>
+                <td>@wo.TotalPieces</td>
+                <td>@wo.CompletedPieces</td>
+                <td>@wo.PendingPieces</td>
+            </tr>
+        }
+    </tbody>
+</table>

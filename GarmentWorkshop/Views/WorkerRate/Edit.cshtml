@@ -1,0 +1,34 @@
+﻿@model GarmentWorkshop.Models.WorkerRate
+
+@{
+    ViewData["Title"] = "Edit Worker Rate";
+}
+
+<h2>Edit Worker Rate</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Worker</label>
+        <select asp-for="WorkerId" class="form-control" asp-items="ViewBag.WorkerId"></select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Garment</label>
+        <select asp-for="GarmentId" class="form-control" asp-items="ViewBag.GarmentId"></select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Rate Per Piece (₹)</label>
+        <input asp-for="RatePerPiece" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Effective From</label>
+        <input asp-for="EffectiveFrom" type="date" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
