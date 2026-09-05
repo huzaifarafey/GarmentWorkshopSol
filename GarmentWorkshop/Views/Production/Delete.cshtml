@@ -1,29 +1,51 @@
-﻿@model GarmentWorkshop.Models.Production
+@model GarmentWorkshop.Models.Production
 
 @{
     ViewData["Title"] = "Delete Production";
 }
 
-<h2>Delete Production</h2>
+<div class="gw-page-header">
+    <div>
+        <h2>Delete Production</h2>
+        <p class="gw-page-subtitle">This action cannot be undone.</p>
+    </div>
+    <div class="gw-page-actions">
+        <a asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-arrow-left"></i> Back to List</a>
+    </div>
+</div>
 
-<p>Are you sure you want to delete this production record?</p>
+<div class="gw-card gw-form-card">
+    <div class="gw-form-card-head">
+        <span class="gw-form-card-icon" style="background:var(--gw-danger-bg); color:var(--gw-danger);"><i class="bi bi-exclamation-triangle"></i></span>
+        <div>
+            <strong>Delete Production Record</strong>
+            <span>Review the details before confirming</span>
+        </div>
+    </div>
+    <div class="gw-form-body">
+        <div class="gw-delete-alert">
+            <i class="bi bi-exclamation-octagon"></i>
+            <div>Are you sure you want to delete this production record? This action cannot be undone.</div>
+        </div>
 
-<dl class="row">
-    <dt class="col-sm-3">Worker</dt>
-    <dd class="col-sm-9">@Model.Worker.Name</dd>
+        <dl class="row gw-detail-list">
+            <dt class="col-sm-3">Worker</dt>
+            <dd class="col-sm-9">@Model.Worker.Name</dd>
 
-    <dt class="col-sm-3">Garment</dt>
-    <dd class="col-sm-9">@Model.WorkOrder.Garment.Name</dd>
+            <dt class="col-sm-3">Garment</dt>
+            <dd class="col-sm-9">@Model.WorkOrder.Garment.Name</dd>
 
-    <dt class="col-sm-3">Date</dt>
-    <dd class="col-sm-9">@Model.Date.ToString("dd-MMM-yyyy")</dd>
+            <dt class="col-sm-3">Date</dt>
+            <dd class="col-sm-9">@Model.Date.ToString("dd-MMM-yyyy")</dd>
 
-    <dt class="col-sm-3">Pieces</dt>
-    <dd class="col-sm-9">@Model.PiecesProduced</dd>
-</dl>
+            <dt class="col-sm-3">Pieces</dt>
+            <dd class="col-sm-9">@Model.PiecesProduced</dd>
+        </dl>
 
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+        <form asp-action="Delete" method="post" class="gw-form-actions">
+            <input type="hidden" asp-for="Id" />
+            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</button>
+        </form>
+    </div>
+</div>

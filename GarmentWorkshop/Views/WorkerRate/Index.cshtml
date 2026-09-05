@@ -1,38 +1,46 @@
-﻿@model IEnumerable<GarmentWorkshop.Models.WorkerRate>
+@model IEnumerable<GarmentWorkshop.Models.WorkerRate>
 
 @{
     ViewData["Title"] = "Worker Rates";
 }
 
-<h2>Worker Rates</h2>
+<div class="gw-page-header">
+    <div>
+        <h2>Worker Rates</h2>
+        <p class="gw-page-subtitle">Per-piece rates configured for each worker and garment.</p>
+    </div>
+    <div class="gw-page-actions">
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Rate</a>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">+ Add Rate</a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Worker</th>
-            <th>Garment</th>
-            <th>Rate/Piece</th>
-            <th>Effective From</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var rate in Model)
-        {
-            <tr>
-                <td>@rate.Worker.Name</td>
-                <td>@rate.Garment.Name</td>
-                <td>₹@rate.RatePerPiece</td>
-                <td>@rate.EffectiveFrom.ToString("dd-MMM-yyyy")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@rate.Id" class="btn btn-sm btn-secondary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@rate.Id" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="gw-card">
+    <div class="gw-table-wrap">
+        <table class="table table-striped gw-datatable">
+            <thead>
+                <tr>
+                    <th>Worker</th>
+                    <th>Garment</th>
+                    <th>Rate/Piece</th>
+                    <th>Effective From</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rate in Model)
+                {
+                    <tr>
+                        <td>@rate.Worker.Name</td>
+                        <td>@rate.Garment.Name</td>
+                        <td>₹@rate.RatePerPiece</td>
+                        <td>@rate.EffectiveFrom.ToString("dd-MMM-yyyy")</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@rate.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="Delete" asp-route-id="@rate.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

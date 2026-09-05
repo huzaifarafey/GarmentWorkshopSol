@@ -1,51 +1,93 @@
-﻿@model GarmentWorkshop.Models.WorkOrder
+@model GarmentWorkshop.Models.WorkOrder
 
 @{
     ViewData["Title"] = "Add Work Order";
 }
 
-<h2>Add Work Order</h2>
-
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label class="form-label">Party</label>
-        <select asp-for="PartyId" class="form-control" asp-items="ViewBag.PartyId">
-            <option value="">-- Select Party --</option>
-        </select>
+<div class="gw-page-header">
+    <div>
+        <h2>Add Work Order</h2>
+        <p class="gw-page-subtitle">Create a new work order for a party and garment.</p>
     </div>
-
-    <div class="mb-3">
-        <label class="form-label">Garment</label>
-        <select asp-for="GarmentId" class="form-control" asp-items="ViewBag.GarmentId">
-            <option value="">-- Select Garment --</option>
-        </select>
+    <div class="gw-page-actions">
+        <a asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-arrow-left"></i> Back to List</a>
     </div>
+</div>
 
-    <div class="mb-3">
-        <label class="form-label">Total Pieces</label>
-        <input asp-for="TotalPieces" class="form-control" />
+<div class="gw-card gw-form-card">
+    <div class="gw-form-card-head">
+        <span class="gw-form-card-icon"><i class="bi bi-clipboard-plus"></i></span>
+        <div>
+            <strong>Work Order Details</strong>
+            <span>Assign pieces and rate for a party's order</span>
+        </div>
     </div>
+    <form asp-action="Create" method="post" class="gw-form-body">
+        <div class="row g-3">
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Party</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-briefcase"></i>
+                    <select asp-for="PartyId" class="form-select" asp-items="ViewBag.PartyId">
+                        <option value="">-- Select Party --</option>
+                    </select>
+                </div>
+            </div>
 
-    <div class="mb-3">
-        <label class="form-label">Party Rate Per Piece (₹)</label>
-        <input asp-for="PartyRatePerPiece" class="form-control" />
-    </div>
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Garment</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-bag"></i>
+                    <select asp-for="GarmentId" class="form-select" asp-items="ViewBag.GarmentId">
+                        <option value="">-- Select Garment --</option>
+                    </select>
+                </div>
+            </div>
 
-    <div class="mb-3">
-        <label class="form-label">Start Date</label>
-        <input asp-for="StartDate" type="date" class="form-control" />
-    </div>
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Total Pieces</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-box-seam"></i>
+                    <input asp-for="TotalPieces" class="form-control" />
+                </div>
+            </div>
 
-    <div class="mb-3">
-        <label class="form-label">Expected End Date (optional)</label>
-        <input asp-for="ExpectedEndDate" type="date" class="form-control" />
-    </div>
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Party Rate Per Piece (₹)</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-currency-rupee"></i>
+                    <input asp-for="PartyRatePerPiece" class="form-control" />
+                </div>
+            </div>
 
-    <div class="mb-3">
-        <label class="form-label">Status</label>
-        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<GarmentWorkshop.Models.WorkOrderStatus>()"></select>
-    </div>
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Start Date</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-calendar3"></i>
+                    <input asp-for="StartDate" type="date" class="form-control" />
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Expected End Date (optional)</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-calendar3"></i>
+                    <input asp-for="ExpectedEndDate" type="date" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Status</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-toggle2-on"></i>
+                    <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<GarmentWorkshop.Models.WorkOrderStatus>()"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="gw-form-actions">
+            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Save</button>
+        </div>
+    </form>
+</div>

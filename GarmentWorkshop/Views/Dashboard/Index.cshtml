@@ -4,136 +4,186 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h2>Dashboard — @Model.PeriodLabel</h2>
-
-<div class="btn-group mb-4" role="group">
-    <a asp-action="Index" asp-route-period="today" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "today" ? "active" : "")">Today</a>
-    <a asp-action="Index" asp-route-period="week" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "week" ? "active" : "")">Week</a>
-    <a asp-action="Index" asp-route-period="15days" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "15days" ? "active" : "")">15 Days</a>
-    <a asp-action="Index" asp-route-period="month" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "month" ? "active" : "")">Month</a>
+<div class="gw-page-header">
+    <div>
+        <h2>Dashboard</h2>
+        <p class="gw-page-subtitle">Overview for @Model.PeriodLabel</p>
+    </div>
+    <div class="btn-group" role="group">
+        <a asp-action="Index" asp-route-period="today" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "today" ? "active" : "")">Today</a>
+        <a asp-action="Index" asp-route-period="week" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "week" ? "active" : "")">Week</a>
+        <a asp-action="Index" asp-route-period="15days" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "15days" ? "active" : "")">15 Days</a>
+        <a asp-action="Index" asp-route-period="month" class="btn btn-outline-primary @(ViewBag.SelectedPeriod == "month" ? "active" : "")">Month</a>
+    </div>
 </div>
 
-<form asp-action="Index" method="get" class="row g-2 mb-4">
-    <input type="hidden" name="period" value="custom" />
-    <div class="col-auto">
-        <input type="date" name="from" class="form-control" value="@Model.FromDate.ToString("yyyy-MM-dd")" />
+<div class="gw-card">
+    <form asp-action="Index" method="get" class="row g-2 align-items-end">
+        <input type="hidden" name="period" value="custom" />
+        <div class="col-auto">
+            <label class="form-label mb-1">From</label>
+            <input type="date" name="from" class="form-control" value="@Model.FromDate.ToString("yyyy-MM-dd")" />
+        </div>
+        <div class="col-auto">
+            <label class="form-label mb-1">To</label>
+            <input type="date" name="to" class="form-control" value="@Model.ToDate.ToString("yyyy-MM-dd")" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-secondary"><i class="bi bi-funnel"></i> Custom Range</button>
+        </div>
+    </form>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3 col-sm-6">
+        <div class="gw-stat-card">
+            <span class="gw-stat-icon"><i class="bi bi-box-seam"></i></span>
+            <div>
+                <p class="gw-stat-label">Total Pieces</p>
+                <h3 class="gw-stat-value">@Model.TotalPiecesProduced</h3>
+            </div>
+        </div>
     </div>
-    <div class="col-auto">
-        <input type="date" name="to" class="form-control" value="@Model.ToDate.ToString("yyyy-MM-dd")" />
+    <div class="col-md-3 col-sm-6">
+        <div class="gw-stat-card">
+            <span class="gw-stat-icon gw-icon-info"><i class="bi bi-wallet2"></i></span>
+            <div>
+                <p class="gw-stat-label">Worker Payment</p>
+                <h3 class="gw-stat-value">₹@Model.TotalWorkerPayment</h3>
+            </div>
+        </div>
     </div>
-    <div class="col-auto">
-        <button type="submit" class="btn btn-secondary">Custom Range</button>
+    <div class="col-md-3 col-sm-6">
+        <div class="gw-stat-card">
+            <span class="gw-stat-icon gw-icon-warning"><i class="bi bi-receipt"></i></span>
+            <div>
+                <p class="gw-stat-label">Total Expenses</p>
+                <h3 class="gw-stat-value">₹@Model.TotalExpenses</h3>
+            </div>
+        </div>
     </div>
-</form>
+    <div class="col-md-3 col-sm-6">
+        <div class="gw-stat-card">
+            <span class="gw-stat-icon @(Model.EstimatedProfit >= 0 ? "gw-icon-success" : "gw-icon-danger")"><i class="bi bi-graph-up-arrow"></i></span>
+            <div>
+                <p class="gw-stat-label">Estimated Profit</p>
+                <h3 class="gw-stat-value @(Model.EstimatedProfit >= 0 ? "text-success" : "text-danger")">₹@Model.EstimatedProfit</h3>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row g-3 mb-4">
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Total Pieces</h6>
-            <h3>@Model.TotalPiecesProduced</h3>
+    <div class="col-md-3 col-sm-6">
+        <div class="gw-stat-card">
+            <span class="gw-stat-icon gw-icon-info"><i class="bi bi-briefcase"></i></span>
+            <div>
+                <p class="gw-stat-label">Party Revenue</p>
+                <h3 class="gw-stat-value">₹@Model.TotalPartyRevenue</h3>
+            </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Worker Payment</h6>
-            <h3>₹@Model.TotalWorkerPayment</h3>
+    <div class="col-md-3 col-sm-6">
+        <div class="gw-stat-card">
+            <span class="gw-stat-icon gw-icon-warning"><i class="bi bi-tools"></i></span>
+            <div>
+                <p class="gw-stat-label">Maintenance Cost</p>
+                <h3 class="gw-stat-value">₹@Model.TotalMaintenance</h3>
+            </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Total Expenses</h6>
-            <h3>₹@Model.TotalExpenses</h3>
+    <div class="col-md-3 col-sm-6">
+        <div class="gw-stat-card">
+            <span class="gw-stat-icon"><i class="bi bi-slash-circle"></i></span>
+            <div>
+                <p class="gw-stat-label">Thread Used</p>
+                <h3 class="gw-stat-value">@Model.ThreadUsedThisPeriod</h3>
+            </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Estimated Profit</h6>
-            <h3 class="@(Model.EstimatedProfit >= 0 ? "text-success" : "text-danger")">₹@Model.EstimatedProfit</h3>
-        </div>
-    </div>
-</div>
-
-<div class="row g-3 mb-4">
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Party Revenue</h6>
-            <h4>₹@Model.TotalPartyRevenue</h4>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Maintenance Cost</h6>
-            <h4>₹@Model.TotalMaintenance</h4>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Thread Used</h6>
-            <h4>@Model.ThreadUsedThisPeriod</h4>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Machines Active</h6>
-            <h4>@Model.ActiveMachinesCount / @Model.TotalMachinesCount</h4>
+    <div class="col-md-3 col-sm-6">
+        <div class="gw-stat-card">
+            <span class="gw-stat-icon gw-icon-success"><i class="bi bi-gear"></i></span>
+            <div>
+                <p class="gw-stat-label">Machines Active</p>
+                <h3 class="gw-stat-value">@Model.ActiveMachinesCount / @Model.TotalMachinesCount</h3>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="row">
+<div class="row g-3">
     <div class="col-md-6">
-        <h4>Worker-wise Production</h4>
-        <table class="table table-sm table-striped">
+        <div class="gw-card mb-0 h-100">
+            <div class="gw-card-header">
+                <h4><i class="bi bi-people me-1 text-muted"></i> Worker-wise Production</h4>
+            </div>
+            <div class="gw-table-wrap">
+                <table class="table table-sm table-striped gw-datatable-mini">
+                    <thead>
+                        <tr><th>Worker</th><th>Pieces</th><th>Earning</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var w in Model.WorkerWiseProduction)
+                        {
+                            <tr>
+                                <td>@w.WorkerName</td>
+                                <td>@w.Pieces</td>
+                                <td>₹@w.Earning</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="gw-card mb-0 h-100">
+            <div class="gw-card-header">
+                <h4><i class="bi bi-receipt-cutoff me-1 text-muted"></i> Expenses by Category</h4>
+            </div>
+            <div class="gw-table-wrap">
+                <table class="table table-sm table-striped gw-datatable-mini">
+                    <thead>
+                        <tr><th>Category</th><th>Amount</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var e in Model.ExpenseByCategory)
+                        {
+                            <tr>
+                                <td>@e.CategoryName</td>
+                                <td>₹@e.Amount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="gw-card mt-3 mb-0">
+    <div class="gw-card-header">
+        <h4><i class="bi bi-clipboard-check me-1 text-muted"></i> Pending Work Orders</h4>
+    </div>
+    <div class="gw-table-wrap">
+        <table class="table table-sm table-striped gw-datatable-mini">
             <thead>
-                <tr><th>Worker</th><th>Pieces</th><th>Earning</th></tr>
+                <tr><th>Party</th><th>Garment</th><th>Total</th><th>Completed</th><th>Pending</th></tr>
             </thead>
             <tbody>
-                @foreach (var w in Model.WorkerWiseProduction)
+                @foreach (var wo in Model.PendingWorkOrders)
                 {
                     <tr>
-                        <td>@w.WorkerName</td>
-                        <td>@w.Pieces</td>
-                        <td>₹@w.Earning</td>
+                        <td>@wo.PartyName</td>
+                        <td>@wo.GarmentName</td>
+                        <td>@wo.TotalPieces</td>
+                        <td>@wo.CompletedPieces</td>
+                        <td>@wo.PendingPieces</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-
-    <div class="col-md-6">
-        <h4>Expenses by Category</h4>
-        <table class="table table-sm table-striped">
-            <thead>
-                <tr><th>Category</th><th>Amount</th></tr>
-            </thead>
-            <tbody>
-                @foreach (var e in Model.ExpenseByCategory)
-                {
-                    <tr>
-                        <td>@e.CategoryName</td>
-                        <td>₹@e.Amount</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
 </div>
-
-<h4 class="mt-4">Pending Work Orders</h4>
-<table class="table table-sm table-striped">
-    <thead>
-        <tr><th>Party</th><th>Garment</th><th>Total</th><th>Completed</th><th>Pending</th></tr>
-    </thead>
-    <tbody>
-        @foreach (var wo in Model.PendingWorkOrders)
-        {
-            <tr>
-                <td>@wo.PartyName</td>
-                <td>@wo.GarmentName</td>
-                <td>@wo.TotalPieces</td>
-                <td>@wo.CompletedPieces</td>
-                <td>@wo.PendingPieces</td>
-            </tr>
-        }
-    </tbody>
-</table>

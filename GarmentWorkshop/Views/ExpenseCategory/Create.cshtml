@@ -1,18 +1,42 @@
-﻿@model GarmentWorkshop.Models.ExpenseCategory
+@model GarmentWorkshop.Models.ExpenseCategory
 
 @{
     ViewData["Title"] = "Add Expense Category";
 }
 
-<h2>Add Expense Category</h2>
-
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label class="form-label">Category Name</label>
-        <input asp-for="Name" class="form-control" placeholder="e.g. Rent, Tea, Bhada, Transport" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+<div class="gw-page-header">
+    <div>
+        <h2>Add Expense Category</h2>
+        <p class="gw-page-subtitle">Create a new category to group your workshop expenses.</p>
     </div>
+    <div class="gw-page-actions">
+        <a asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-arrow-left"></i> Back to List</a>
+    </div>
+</div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+<div class="gw-card gw-form-card">
+    <div class="gw-form-card-head">
+        <span class="gw-form-card-icon"><i class="bi bi-receipt"></i></span>
+        <div>
+            <strong>Category Details</strong>
+            <span>Group your workshop expenses</span>
+        </div>
+    </div>
+    <form asp-action="Create" method="post" class="gw-form-body">
+        <div class="row g-3">
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Category Name</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-tag"></i>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. Rent, Tea, Bhada, Transport" />
+                </div>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="gw-form-actions">
+            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Save</button>
+        </div>
+    </form>
+</div>

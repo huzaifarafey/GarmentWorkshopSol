@@ -1,38 +1,46 @@
-﻿@model IEnumerable<GarmentWorkshop.Models.Party>
+@model IEnumerable<GarmentWorkshop.Models.Party>
 
 @{
     ViewData["Title"] = "Parties";
 }
 
-<h2>Parties</h2>
+<div class="gw-page-header">
+    <div>
+        <h2>Parties</h2>
+        <p class="gw-page-subtitle">Customers and business parties you produce garments for.</p>
+    </div>
+    <div class="gw-page-actions">
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Party</a>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">+ Add Party</a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Contact Person</th>
-            <th>Mobile</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var party in Model)
-        {
-            <tr>
-                <td>@party.Name</td>
-                <td>@party.ContactPerson</td>
-                <td>@party.Mobile</td>
-                <td>@party.Status</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@party.Id" class="btn btn-sm btn-secondary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@party.Id" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="gw-card">
+    <div class="gw-table-wrap">
+        <table class="table table-striped gw-datatable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact Person</th>
+                    <th>Mobile</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var party in Model)
+                {
+                    <tr>
+                        <td>@party.Name</td>
+                        <td>@party.ContactPerson</td>
+                        <td>@party.Mobile</td>
+                        <td><span class="badge @(party.Status == GarmentWorkshop.Models.PartyStatus.Active ? "gw-badge-success" : "gw-badge-neutral")">@party.Status</span></td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@party.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="Delete" asp-route-id="@party.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,15 +1,37 @@
-﻿@model GarmentWorkshop.Models.ExpenseCategory
+@model GarmentWorkshop.Models.ExpenseCategory
 
 @{
     ViewData["Title"] = "Delete Category";
 }
 
-<h2>Delete Category</h2>
+<div class="gw-page-header">
+    <div>
+        <h2>Delete Category</h2>
+        <p class="gw-page-subtitle">This action cannot be undone.</p>
+    </div>
+    <div class="gw-page-actions">
+        <a asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-arrow-left"></i> Back to List</a>
+    </div>
+</div>
 
-<p>Are you sure you want to delete "@Model.Name"?</p>
+<div class="gw-card gw-form-card">
+    <div class="gw-form-card-head">
+        <span class="gw-form-card-icon" style="background:var(--gw-danger-bg); color:var(--gw-danger);"><i class="bi bi-exclamation-triangle"></i></span>
+        <div>
+            <strong>Delete Category</strong>
+            <span>Review before confirming</span>
+        </div>
+    </div>
+    <div class="gw-form-body">
+        <div class="gw-delete-alert">
+            <i class="bi bi-exclamation-octagon"></i>
+            <div>Are you sure you want to delete "@Model.Name"? This action cannot be undone.</div>
+        </div>
 
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+        <form asp-action="Delete" method="post" class="gw-form-actions">
+            <input type="hidden" asp-for="Id" />
+            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</button>
+        </form>
+    </div>
+</div>

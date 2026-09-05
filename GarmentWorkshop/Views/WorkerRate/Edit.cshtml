@@ -1,34 +1,67 @@
-﻿@model GarmentWorkshop.Models.WorkerRate
+@model GarmentWorkshop.Models.WorkerRate
 
 @{
     ViewData["Title"] = "Edit Worker Rate";
 }
 
-<h2>Edit Worker Rate</h2>
-
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-
-    <div class="mb-3">
-        <label class="form-label">Worker</label>
-        <select asp-for="WorkerId" class="form-control" asp-items="ViewBag.WorkerId"></select>
+<div class="gw-page-header">
+    <div>
+        <h2>Edit Worker Rate</h2>
+        <p class="gw-page-subtitle">Update this worker rate's details.</p>
     </div>
-
-    <div class="mb-3">
-        <label class="form-label">Garment</label>
-        <select asp-for="GarmentId" class="form-control" asp-items="ViewBag.GarmentId"></select>
+    <div class="gw-page-actions">
+        <a asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-arrow-left"></i> Back to List</a>
     </div>
+</div>
 
-    <div class="mb-3">
-        <label class="form-label">Rate Per Piece (₹)</label>
-        <input asp-for="RatePerPiece" class="form-control" />
+<div class="gw-card gw-form-card">
+    <div class="gw-form-card-head">
+        <span class="gw-form-card-icon"><i class="bi bi-cash-coin"></i></span>
+        <div>
+            <strong>Worker Rate Details</strong>
+            <span>Update this worker rate</span>
+        </div>
     </div>
+    <form asp-action="Edit" method="post" class="gw-form-body">
+        <input type="hidden" asp-for="Id" />
 
-    <div class="mb-3">
-        <label class="form-label">Effective From</label>
-        <input asp-for="EffectiveFrom" type="date" class="form-control" />
-    </div>
+        <div class="row g-3">
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Worker</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-person"></i>
+                    <select asp-for="WorkerId" class="form-select" asp-items="ViewBag.WorkerId"></select>
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Garment</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-bag"></i>
+                    <select asp-for="GarmentId" class="form-select" asp-items="ViewBag.GarmentId"></select>
+                </div>
+            </div>
+
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Rate Per Piece (₹)</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-currency-rupee"></i>
+                    <input asp-for="RatePerPiece" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Effective From</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-calendar3"></i>
+                    <input asp-for="EffectiveFrom" type="date" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="gw-form-actions">
+            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Save</button>
+        </div>
+    </form>
+</div>

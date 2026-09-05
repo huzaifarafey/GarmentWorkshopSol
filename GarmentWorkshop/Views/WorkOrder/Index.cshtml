@@ -1,43 +1,51 @@
-﻿@model IEnumerable<GarmentWorkshop.Models.WorkOrder>
+@model IEnumerable<GarmentWorkshop.Models.WorkOrder>
 
 @{
     ViewData["Title"] = "Work Orders";
 }
 
-<h2>Work Orders</h2>
+<div class="gw-page-header">
+    <div>
+        <h2>Work Orders</h2>
+        <p class="gw-page-subtitle">All work orders placed by your parties.</p>
+    </div>
+    <div class="gw-page-actions">
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Work Order</a>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">+ Add Work Order</a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Party</th>
-            <th>Garment</th>
-            <th>Total Pieces</th>
-            <th>Party Rate</th>
-            <th>Start Date</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var wo in Model)
-        {
-            <tr>
-                <td>@wo.Party.Name</td>
-                <td>@wo.Garment.Name</td>
-                <td>@wo.TotalPieces</td>
-                <td>₹@wo.PartyRatePerPiece</td>
-                <td>@wo.StartDate.ToString("dd-MMM-yyyy")</td>
-                <td>@wo.Status</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@wo.Id" class="btn btn-sm btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@wo.Id" class="btn btn-sm btn-secondary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@wo.Id" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="gw-card">
+    <div class="gw-table-wrap">
+        <table class="table table-striped gw-datatable">
+            <thead>
+                <tr>
+                    <th>Party</th>
+                    <th>Garment</th>
+                    <th>Total Pieces</th>
+                    <th>Party Rate</th>
+                    <th>Start Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var wo in Model)
+                {
+                    <tr>
+                        <td>@wo.Party.Name</td>
+                        <td>@wo.Garment.Name</td>
+                        <td>@wo.TotalPieces</td>
+                        <td>₹@wo.PartyRatePerPiece</td>
+                        <td>@wo.StartDate.ToString("dd-MMM-yyyy")</td>
+                        <td><span class="badge @(wo.Status == GarmentWorkshop.Models.WorkOrderStatus.Completed ? "gw-badge-success" : "gw-badge-info")">@wo.Status</span></td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@wo.Id" class="btn btn-sm btn-icon btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Details"><i class="bi bi-eye"></i></a>
+                            <a asp-action="Edit" asp-route-id="@wo.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="Delete" asp-route-id="@wo.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

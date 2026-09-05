@@ -1,42 +1,50 @@
-﻿@model IEnumerable<GarmentWorkshop.Models.Production>
+@model IEnumerable<GarmentWorkshop.Models.Production>
 
 @{
     ViewData["Title"] = "Daily Production";
 }
 
-<h2>Daily Production</h2>
+<div class="gw-page-header">
+    <div>
+        <h2>Daily Production</h2>
+        <p class="gw-page-subtitle">All recorded production entries and worker earnings.</p>
+    </div>
+    <div class="gw-page-actions">
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Production</a>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">+ Add Production</a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Worker</th>
-            <th>Party</th>
-            <th>Garment</th>
-            <th>Pieces</th>
-            <th>Earning</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var p in Model)
-        {
-            <tr>
-                <td>@p.Date.ToString("dd-MMM-yyyy")</td>
-                <td>@p.Worker.Name</td>
-                <td>@p.WorkOrder.Party.Name</td>
-                <td>@p.WorkOrder.Garment.Name</td>
-                <td>@p.PiecesProduced</td>
-                <td>₹@ViewBag.Earnings[p.Id]</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-secondary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="gw-card">
+    <div class="gw-table-wrap">
+        <table class="table table-striped gw-datatable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Worker</th>
+                    <th>Party</th>
+                    <th>Garment</th>
+                    <th>Pieces</th>
+                    <th>Earning</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.Date.ToString("dd-MMM-yyyy")</td>
+                        <td>@p.Worker.Name</td>
+                        <td>@p.WorkOrder.Party.Name</td>
+                        <td>@p.WorkOrder.Garment.Name</td>
+                        <td>@p.PiecesProduced</td>
+                        <td>₹@ViewBag.Earnings[p.Id]</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

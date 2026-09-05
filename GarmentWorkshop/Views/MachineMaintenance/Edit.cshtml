@@ -1,34 +1,67 @@
-﻿@model GarmentWorkshop.Models.MachineMaintenance
+@model GarmentWorkshop.Models.MachineMaintenance
 
 @{
     ViewData["Title"] = "Edit Maintenance Record";
 }
 
-<h2>Edit Maintenance Record</h2>
-
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-
-    <div class="mb-3">
-        <label class="form-label">Machine</label>
-        <select asp-for="MachineId" class="form-control" asp-items="ViewBag.MachineId"></select>
+<div class="gw-page-header">
+    <div>
+        <h2>Edit Maintenance Record</h2>
+        <p class="gw-page-subtitle">Update this maintenance record's details.</p>
     </div>
-
-    <div class="mb-3">
-        <label class="form-label">Date</label>
-        <input asp-for="Date" type="date" class="form-control" />
+    <div class="gw-page-actions">
+        <a asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-arrow-left"></i> Back to List</a>
     </div>
+</div>
 
-    <div class="mb-3">
-        <label class="form-label">Amount (₹)</label>
-        <input asp-for="Amount" class="form-control" />
+<div class="gw-card gw-form-card">
+    <div class="gw-form-card-head">
+        <span class="gw-form-card-icon"><i class="bi bi-tools"></i></span>
+        <div>
+            <strong>Maintenance Details</strong>
+            <span>Update this maintenance record</span>
+        </div>
     </div>
+    <form asp-action="Edit" method="post" class="gw-form-body">
+        <input type="hidden" asp-for="Id" />
 
-    <div class="mb-3">
-        <label class="form-label">Note (optional)</label>
-        <input asp-for="Note" class="form-control" />
-    </div>
+        <div class="row g-3">
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Machine</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-gear"></i>
+                    <select asp-for="MachineId" class="form-select" asp-items="ViewBag.MachineId"></select>
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Date</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-calendar3"></i>
+                    <input asp-for="Date" type="date" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Amount (₹)</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-currency-rupee"></i>
+                    <input asp-for="Amount" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Note (optional)</label>
+                <div class="gw-field-icon">
+                    <i class="bi bi-card-text"></i>
+                    <input asp-for="Note" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="gw-form-actions">
+            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Save</button>
+        </div>
+    </form>
+</div>

@@ -1,38 +1,46 @@
-﻿@model GarmentWorkshop.Models.WorkOrder
+@model GarmentWorkshop.Models.WorkOrder
 
 @{
     ViewData["Title"] = "Work Order Details";
 }
 
-<h2>Work Order Details</h2>
+<div class="gw-page-header">
+    <div>
+        <h2>Work Order Details</h2>
+        <p class="gw-page-subtitle">Progress and revenue summary for this work order.</p>
+    </div>
+    <div class="gw-page-actions">
+        <a asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-arrow-left"></i> Back to List</a>
+    </div>
+</div>
 
-<dl class="row">
-    <dt class="col-sm-3">Party</dt>
-    <dd class="col-sm-9">@Model.Party.Name</dd>
+<div class="gw-card">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Party</dt>
+        <dd class="col-sm-9">@Model.Party.Name</dd>
 
-    <dt class="col-sm-3">Garment</dt>
-    <dd class="col-sm-9">@Model.Garment.Name</dd>
+        <dt class="col-sm-3">Garment</dt>
+        <dd class="col-sm-9">@Model.Garment.Name</dd>
 
-    <dt class="col-sm-3">Total Pieces</dt>
-    <dd class="col-sm-9">@Model.TotalPieces</dd>
+        <dt class="col-sm-3">Total Pieces</dt>
+        <dd class="col-sm-9">@Model.TotalPieces</dd>
 
-    <dt class="col-sm-3">Party Rate</dt>
-    <dd class="col-sm-9">₹@Model.PartyRatePerPiece / piece</dd>
+        <dt class="col-sm-3">Party Rate</dt>
+        <dd class="col-sm-9">₹@Model.PartyRatePerPiece / piece</dd>
 
-    <dt class="col-sm-3">Start Date</dt>
-    <dd class="col-sm-9">@Model.StartDate.ToString("dd-MMM-yyyy")</dd>
+        <dt class="col-sm-3">Start Date</dt>
+        <dd class="col-sm-9">@Model.StartDate.ToString("dd-MMM-yyyy")</dd>
 
-    <dt class="col-sm-3">Status</dt>
-    <dd class="col-sm-9">@Model.Status</dd>
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9"><span class="badge @(Model.Status == GarmentWorkshop.Models.WorkOrderStatus.Completed ? "gw-badge-success" : "gw-badge-info")">@Model.Status</span></dd>
 
-    <dt class="col-sm-3">Completed Pieces</dt>
-    <dd class="col-sm-9">@ViewBag.CompletedPieces</dd>
+        <dt class="col-sm-3">Completed Pieces</dt>
+        <dd class="col-sm-9">@ViewBag.CompletedPieces</dd>
 
-    <dt class="col-sm-3">Pending Pieces</dt>
-    <dd class="col-sm-9">@ViewBag.PendingPieces</dd>
+        <dt class="col-sm-3">Pending Pieces</dt>
+        <dd class="col-sm-9">@ViewBag.PendingPieces</dd>
 
-    <dt class="col-sm-3">Revenue So Far</dt>
-    <dd class="col-sm-9">₹@((int)ViewBag.CompletedPieces * Model.PartyRatePerPiece)</dd>
-</dl>
-
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <dt class="col-sm-3">Revenue So Far</dt>
+        <dd class="col-sm-9">₹@((int)ViewBag.CompletedPieces * Model.PartyRatePerPiece)</dd>
+    </dl>
+</div>

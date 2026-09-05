@@ -1,36 +1,44 @@
-﻿@model IEnumerable<GarmentWorkshop.Models.Garment>
+@model IEnumerable<GarmentWorkshop.Models.Garment>
 
 @{
     ViewData["Title"] = "Garments";
 }
 
-<h2>Garments</h2>
+<div class="gw-page-header">
+    <div>
+        <h2>Garments</h2>
+        <p class="gw-page-subtitle">All garment types produced in your workshop.</p>
+    </div>
+    <div class="gw-page-actions">
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Garment</a>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">+ Add Garment</a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var garment in Model)
-        {
-            <tr>
-                <td>@garment.Name</td>
-                <td>@garment.Category</td>
-                <td>@garment.Status</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@garment.Id" class="btn btn-sm btn-secondary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@garment.Id" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="gw-card">
+    <div class="gw-table-wrap">
+        <table class="table table-striped gw-datatable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var garment in Model)
+                {
+                    <tr>
+                        <td>@garment.Name</td>
+                        <td>@garment.Category</td>
+                        <td><span class="badge @(garment.Status == GarmentWorkshop.Models.GarmentStatus.Active ? "gw-badge-success" : "gw-badge-neutral")">@garment.Status</span></td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@garment.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="Delete" asp-route-id="@garment.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
