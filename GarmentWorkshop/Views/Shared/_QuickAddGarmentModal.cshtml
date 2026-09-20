@@ -1,0 +1,78 @@
+﻿<div class="modal fade" id="quickAddGarmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-bag-plus"></i> Quick Add Garment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Garment Name</label>
+                    <input type="text" id="quickGarmentName" class="form-control" placeholder="e.g. Palazzo" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Category (optional)</label>
+                    <input type="text" id="quickGarmentCategory" class="form-control" placeholder="e.g. Bottoms" />
+                </div>
+                <div id="quickGarmentError" class="text-danger small" style="display:none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="quickGarmentSaveBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var saveBtn = document.getElementById('quickGarmentSaveBtn');
+        if (!saveBtn) return;
+
+        saveBtn.addEventListener('click', function () {
+            var name = document.getElementById('quickGarmentName').value.trim();
+            var category = document.getElementById('quickGarmentCategory').value.trim();
+            var errorDiv = document.getElementById('quickGarmentError');
+            errorDiv.style.display = 'none';
+
+            if (!name) {
+                errorDiv.textContent = 'Garment name is required.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('name', name);
+            formData.append('category', category);
+
+            var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            fetch('/Garment/QuickCreate', {
+                method: 'POST',
+                headers: { 'RequestVerificationToken': token },
+                body: formData
+            })
+            .then(function (res) {
+                if (!res.ok) throw new Error('Failed');
+                return res.json();
+            })
+            .then(function (data) {
+                var select = document.getElementById('GarmentId');
+                var option = document.createElement('option');
+                option.value = data.id;
+                option.text = data.name;
+                option.selected = true;
+                select.appendChild(option);
+
+                document.getElementById('quickGarmentName').value = '';
+                document.getElementById('quickGarmentCategory').value = '';
+
+                bootstrap.Modal.getInstance(document.getElementById('quickAddGarmentModal')).hide();
+            })
+            .catch(function () {
+                errorDiv.textContent = 'Could not save garment. Please try again.';
+                errorDiv.style.display = 'block';
+            });
+        });
+    });
+</script>

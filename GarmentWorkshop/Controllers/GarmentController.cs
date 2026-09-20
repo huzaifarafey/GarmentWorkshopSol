@@ -45,6 +45,27 @@ public class GarmentController : Controller
         return RedirectToAction("Index");
     }
 
+    // POST: /Garment/QuickCreate — used by the "+" button on WorkOrder forms
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> QuickCreate([FromForm] string name, [FromForm] string? category)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return BadRequest("Garment name is required.");
+
+        var garment = new Garment
+        {
+            Name = name.Trim(),
+            Category = string.IsNullOrWhiteSpace(category) ? null : category.Trim(),
+            Status = GarmentStatus.Active
+        };
+
+        _context.Garments.Add(garment);
+        await _context.SaveChangesAsync();
+
+        return Json(new { id = garment.Id, name = garment.Name });
+    }
+
     // GET: /Garment/Edit
     public async Task<IActionResult> Edit(int id)
     {

@@ -22,6 +22,18 @@
         <dt class="col-sm-3">Garment</dt>
         <dd class="col-sm-9">@Model.Garment.Name</dd>
 
+        <dt class="col-sm-3">Style / Color</dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.StyleOrColor))
+            {
+                <span class="badge gw-badge-info">@Model.StyleOrColor</span>
+            }
+            else
+            {
+                <span class="text-muted">Not specified</span>
+            }
+        </dd>
+
         <dt class="col-sm-3">Total Pieces</dt>
         <dd class="col-sm-9">@Model.TotalPieces</dd>
 

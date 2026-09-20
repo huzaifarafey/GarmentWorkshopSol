@@ -35,6 +35,9 @@
             <dt class="col-sm-3">Garment</dt>
             <dd class="col-sm-9">@Model.Garment.Name</dd>
 
+            <dt class="col-sm-3">Style / Color</dt>
+            <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.StyleOrColor) ? "—" : Model.StyleOrColor)</dd>
+
             <dt class="col-sm-3">Total Pieces</dt>
             <dd class="col-sm-9">@Model.TotalPieces</dd>
 

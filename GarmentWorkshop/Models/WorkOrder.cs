@@ -21,6 +21,9 @@ namespace GarmentWorkshop.Models
         public int GarmentId { get; set; }
         public Garment? Garment { get; set; }
 
+        [MaxLength(50)]
+        public string? StyleOrColor { get; set; }   // e.g. "Red Floral", "Style A102" — identifies this specific order
+
         [Required]
         public int TotalPieces { get; set; }
 

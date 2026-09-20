@@ -1,4 +1,4 @@
-@model IEnumerable<GarmentWorkshop.Models.Production>
+@model GarmentWorkshop.ViewModels.ProductionListViewModel
 
 @{
     ViewData["Title"] = "Daily Production";
@@ -14,37 +14,91 @@
     </div>
 </div>
 
-<div class="gw-card">
-    <div class="gw-table-wrap">
-        <table class="table table-striped gw-datatable">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Worker</th>
-                    <th>Party</th>
-                    <th>Garment</th>
-                    <th>Pieces</th>
-                    <th>Earning</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in Model)
-                {
+@{
+    async Task RenderProductionTable(List<GarmentWorkshop.ViewModels.ProductionRow> rows)
+    {
+        if (!rows.Any())
+        {
+            <div class="gw-empty-state">No entries.</div>
+            return;
+        }
+
+        <div class="gw-table-wrap">
+            <table class="table table-striped gw-datatable">
+                <thead>
                     <tr>
-                        <td>@p.Date.ToString("dd-MMM-yyyy")</td>
-                        <td>@p.Worker.Name</td>
-                        <td>@p.WorkOrder.Party.Name</td>
-                        <td>@p.WorkOrder.Garment.Name</td>
-                        <td>@p.PiecesProduced</td>
-                        <td>₹@ViewBag.Earnings[p.Id]</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="bi bi-pencil"></i></a>
-                            <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="bi bi-trash"></i></a>
-                        </td>
+                        <th>Date</th>
+                        <th>Worker</th>
+                        <th>Party</th>
+                        <th>Garment</th>
+                        <th>Style/Color</th>
+                        <th>Pieces</th>
+                        <th>Earning</th>
+                        <th>Action</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var row in rows)
+                    {
+                        var p = row.Production;
+                        <tr>
+                            <td>@p.Date.ToString("dd-MMM-yyyy")</td>
+                            <td>@p.Worker.Name</td>
+                            <td>@p.WorkOrder.Party.Name</td>
+                            <td>@p.WorkOrder.Garment.Name</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(p.WorkOrder.StyleOrColor))
+                                {
+                                    <span class="badge gw-badge-info">@p.WorkOrder.StyleOrColor</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                            </td>
+                            <td>@p.PiecesProduced</td>
+                            <td>₹@row.Earning</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" title="Edit"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" title="Delete"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}
+
+<!-- ============ TODAY ============ -->
+<div class="gw-card mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong><i class="bi bi-calendar-check text-success"></i> Today</strong>
+        <span class="text-muted small">@DateTime.Today.ToString("dd-MMM-yyyy")</span>
     </div>
+    @{
+        await RenderProductionTable(Model.TodayEntries);
+    }
+</div>
+
+<!-- ============ THIS WEEK ============ -->
+<div class="gw-card mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong><i class="bi bi-calendar-week text-primary"></i> This Week</strong>
+        <span class="text-muted small">Last 7 days, excluding today</span>
+    </div>
+    @{
+        await RenderProductionTable(Model.ThisWeekEntries);
+    }
+</div>
+
+<!-- ============ EARLIER ============ -->
+<div class="gw-card">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong><i class="bi bi-clock-history text-muted"></i> Earlier</strong>
+        <span class="text-muted small">Older records</span>
+    </div>
+    @{
+        await RenderProductionTable(Model.EarlierEntries);
+    }
 </div>
