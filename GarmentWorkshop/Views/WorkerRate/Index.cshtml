@@ -1,4 +1,4 @@
-@model IEnumerable<GarmentWorkshop.Models.WorkerRate>
+@model GarmentWorkshop.ViewModels.WorkerRateListViewModel
 
 @{
     ViewData["Title"] = "Worker Rates";
@@ -14,33 +14,126 @@
     </div>
 </div>
 
-<div class="gw-card">
-    <div class="gw-table-wrap">
-        <table class="table table-striped gw-datatable">
-            <thead>
-                <tr>
-                    <th>Worker</th>
-                    <th>Garment</th>
-                    <th>Rate/Piece</th>
-                    <th>Effective From</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var rate in Model)
-                {
-                    <tr>
-                        <td>@rate.Worker.Name</td>
-                        <td>@rate.Garment.Name</td>
-                        <td>₹@rate.RatePerPiece</td>
-                        <td>@rate.EffectiveFrom.ToString("dd-MMM-yyyy")</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@rate.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="bi bi-pencil"></i></a>
-                            <a asp-action="Delete" asp-route-id="@rate.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="bi bi-trash"></i></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<!-- ============ CURRENT RATES ============ -->
+<div class="gw-card mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong><i class="bi bi-check-circle text-success"></i> Current Rates</strong>
+        <span class="text-muted small">Applicable as of today</span>
     </div>
+    @if (!Model.CurrentRates.Any())
+    {
+        <div class="gw-empty-state">No current rates set.</div>
+    }
+    else
+    {
+        <div class="gw-table-wrap">
+            <table class="table table-striped gw-datatable">
+                <thead>
+                    <tr>
+                        <th>Worker</th>
+                        <th>Garment</th>
+                        <th>Rate/Piece</th>
+                        <th>Effective From</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rate in Model.CurrentRates)
+                    {
+                        <tr>
+                            <td>@rate.Worker.Name</td>
+                            <td>@rate.Garment.Name</td>
+                            <td>₹@rate.RatePerPiece</td>
+                            <td>@rate.EffectiveFrom.ToString("dd-MMM-yyyy")</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@rate.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" title="Edit"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Delete" asp-route-id="@rate.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" title="Delete"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<!-- ============ UPCOMING RATES ============ -->
+@if (Model.UpcomingRates.Any())
+{
+    <div class="gw-card mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <strong><i class="bi bi-clock text-primary"></i> Upcoming Rates</strong>
+            <span class="text-muted small">Will take effect on a future date</span>
+        </div>
+        <div class="gw-table-wrap">
+            <table class="table table-striped gw-datatable">
+                <thead>
+                    <tr>
+                        <th>Worker</th>
+                        <th>Garment</th>
+                        <th>Rate/Piece</th>
+                        <th>Effective From</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rate in Model.UpcomingRates)
+                    {
+                        <tr>
+                            <td>@rate.Worker.Name</td>
+                            <td>@rate.Garment.Name</td>
+                            <td>₹@rate.RatePerPiece</td>
+                            <td><span class="badge gw-badge-info">@rate.EffectiveFrom.ToString("dd-MMM-yyyy")</span></td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@rate.Id" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="tooltip" title="Edit"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Delete" asp-route-id="@rate.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" title="Delete"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<!-- ============ RATE HISTORY ============ -->
+<div class="gw-card">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong><i class="bi bi-clock-history text-muted"></i> Rate History</strong>
+        <span class="text-muted small">Superseded rates, kept for old production records</span>
+    </div>
+    @if (!Model.HistoryRates.Any())
+    {
+        <div class="gw-empty-state">No rate history yet.</div>
+    }
+    else
+    {
+        <div class="gw-table-wrap">
+            <table class="table table-striped gw-datatable">
+                <thead>
+                    <tr>
+                        <th>Worker</th>
+                        <th>Garment</th>
+                        <th>Rate/Piece</th>
+                        <th>Effective From</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rate in Model.HistoryRates)
+                    {
+                        <tr class="text-muted">
+                            <td>@rate.Worker.Name</td>
+                            <td>@rate.Garment.Name</td>
+                            <td>₹@rate.RatePerPiece</td>
+                            <td>@rate.EffectiveFrom.ToString("dd-MMM-yyyy")</td>
+                            <td>
+                                <a asp-action="Delete" asp-route-id="@rate.Id" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" title="Delete"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>

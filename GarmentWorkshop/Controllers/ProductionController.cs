@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GarmentWorkshop.EF;
+using GarmentWorkshop.Models;
+using GarmentWorkshop.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GarmentWorkshop.EF;
-using GarmentWorkshop.Models;
 
 namespace GarmentWorkshop.Controllers;
 
@@ -25,16 +26,24 @@ public class ProductionController : Controller
             .OrderByDescending(p => p.Date)
             .ToListAsync();
 
-        // Calculate earning for each row (for display only, not stored)
-        var earningsMap = new Dictionary<int, decimal>();
+        var vm = new ProductionListViewModel();
+        var today = DateTime.Today;
+        var weekStart = today.AddDays(-6); // last 7 days including today
+
         foreach (var p in productions)
         {
             var rate = await GetApplicableRate(p.WorkerId, p.WorkOrder.GarmentId, p.Date);
-            earningsMap[p.Id] = rate * p.PiecesProduced;
-        }
-        ViewBag.Earnings = earningsMap;
+            var row = new ProductionRow { Production = p, Earning = rate * p.PiecesProduced };
 
-        return View(productions);
+            if (p.Date == today)
+                vm.TodayEntries.Add(row);
+            else if (p.Date >= weekStart)
+                vm.ThisWeekEntries.Add(row);
+            else
+                vm.EarlierEntries.Add(row);
+        }
+
+        return View(vm);
     }
 
     // GET: /Production/Create

@@ -33,6 +33,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link @(IsActive("DailyEntry") ? "active" : "")" asp-area="" asp-controller="DailyEntry" asp-action="Index">
+                        <i class="bi bi-calendar2-check gw-nav-ico"></i> Daily Entry
+                    </a>
+                </li>
+                @* <li class="nav-item">
                     <a class="nav-link @(IsActive("Worker") ? "active" : "")" asp-area="" asp-controller="Worker" asp-action="Index">
                         <i class="bi bi-people gw-nav-ico"></i> Workers
                     </a>
@@ -41,7 +46,7 @@
                     <a class="nav-link @(IsActive("Party") ? "active" : "")" asp-area="" asp-controller="Party" asp-action="Index">
                         <i class="bi bi-briefcase gw-nav-ico"></i> Parties
                     </a>
-                </li>
+                </li> *@
                 <li class="nav-item">
                     <a class="nav-link @(IsActive("Garment") ? "active" : "")" asp-area="" asp-controller="Garment" asp-action="Index">
                         <i class="bi bi-bag gw-nav-ico"></i> Garments
@@ -62,20 +67,18 @@
                         <i class="bi bi-graph-up gw-nav-ico"></i> Production
                     </a>
                 </li>
-                <li class="nav-item">
+                @* <li class="nav-item">
                     <a class="nav-link @(IsActive("Machine") ? "active" : "")" asp-area="" asp-controller="Machine" asp-action="Index">
                         <i class="bi bi-gear gw-nav-ico"></i> Machines
                     </a>
-                </li>
+                </li> *@
                 <li class="nav-item">
                     <a class="nav-link @(IsActive("MachineMaintenance") ? "active" : "")" asp-area="" asp-controller="MachineMaintenance" asp-action="Index">
                         <i class="bi bi-tools gw-nav-ico"></i> Maintenance
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(IsActive("DailyEntry") ? "active" : "")" asp-area="" asp-controller="DailyEntry" asp-action="Index">
-                        <i class="bi bi-calendar2-check gw-nav-ico"></i> Daily Entry
-                    </a>
+                    <a class="nav-link" asp-controller="MasterData" asp-action="Index"><i class="bi bi-database"></i> Master Data</a>
                 </li>
             </ul>
             <div class="gw-sidebar-foot">

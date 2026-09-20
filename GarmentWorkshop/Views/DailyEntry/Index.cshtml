@@ -229,10 +229,43 @@
                 <tbody>
                     @foreach (var entry in Model.TodayEntries)
                     {
+                        string badgeClass;
+                        string icon;
+                        string valueClass;
+
+                        switch (entry.Type)
+                        {
+                            case "Production":
+                                badgeClass = "bg-primary";
+                                icon = "bi-graph-up";
+                                valueClass = "text-success fw-semibold";
+                                break;
+                            case "Expense":
+                                badgeClass = "bg-warning text-dark";
+                                icon = "bi-receipt";
+                                valueClass = "text-danger fw-semibold";
+                                break;
+                            case "Maintenance":
+                                badgeClass = "bg-danger";
+                                icon = "bi-tools";
+                                valueClass = "text-danger fw-semibold";
+                                break;
+                            case "Thread":
+                                badgeClass = "bg-secondary";
+                                icon = "bi-slash-circle";
+                                valueClass = "text-body";
+                                break;
+                            default:
+                                badgeClass = "gw-badge-info";
+                                icon = "bi-tag";
+                                valueClass = "text-body";
+                                break;
+                        }
+
                         <tr>
-                            <td><span class="badge gw-badge-info">@entry.Type</span></td>
+                            <td><span class="badge @badgeClass"><i class="bi @icon me-1"></i>@entry.Type</span></td>
                             <td>@entry.Description</td>
-                            <td>@entry.Value</td>
+                            <td class="@valueClass">@entry.Value</td>
                         </tr>
                     }
                 </tbody>
