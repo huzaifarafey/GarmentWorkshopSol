@@ -1,0 +1,366 @@
+﻿@model GarmentWorkshop.ViewModels.MasterDataViewModel
+
+@{
+    ViewData["Title"] = "Master Data";
+}
+
+<div class="gw-page-header">
+    <div>
+        <h2>Master Data</h2>
+        <p class="gw-page-subtitle">Manage Workers, Parties, and Machines — all in one place.</p>
+    </div>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-@ViewBag.MessageType">@ViewBag.Message</div>
+}
+
+<ul class="nav nav-tabs mb-3" id="masterDataTabs">
+    <li class="nav-item">
+        <button class="nav-link @(ViewBag.ActiveTab == "worker" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#workerTab" type="button"><i class="bi bi-person-badge"></i> Workers</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link @(ViewBag.ActiveTab == "party" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#partyTab" type="button"><i class="bi bi-briefcase"></i> Parties</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link @(ViewBag.ActiveTab == "machine" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#machineTab" type="button"><i class="bi bi-gear"></i> Machines</button>
+    </li>
+</ul>
+
+<div class="tab-content">
+
+    <!-- ============ WORKER TAB ============ -->
+    <div class="tab-pane fade @(ViewBag.ActiveTab == "worker" ? "show active" : "")" id="workerTab">
+        <div class="gw-card mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong><i class="bi bi-person-plus"></i> Add Worker</strong>
+            </div>
+            <form asp-controller="MasterData" asp-action="AddWorker" method="post" class="row g-2">
+                <div class="col-md-4">
+                    <input name="Name" class="form-control" placeholder="Worker Name" required />
+                </div>
+                <div class="col-md-3">
+                    <input name="Phone" class="form-control" placeholder="Phone" required />
+                </div>
+                <div class="col-md-3">
+                    <select name="Status" class="form-select">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-lg"></i> Add</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="gw-card">
+            <div class="gw-table-wrap">
+                <table class="table table-striped gw-datatable">
+                    <thead>
+                        <tr><th>Name</th><th>Phone</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var w in Model.Workers)
+                        {
+                            <tr>
+                                <td>@w.Name</td>
+                                <td>@w.Phone</td>
+                                <td><span class="badge @(w.Status == GarmentWorkshop.Models.WorkerStatus.Active ? "gw-badge-success" : "bg-secondary")">@w.Status</span></td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="modal" data-bs-target="#editWorkerModal"
+                                            data-id="@w.Id" data-name="@w.Name" data-phone="@w.Phone" data-status="@w.Status">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <form asp-controller="MasterData" asp-action="DeleteWorker" method="post" class="d-inline" onsubmit="return confirm('Delete worker @w.Name?');">
+                                        <input type="hidden" name="id" value="@w.Id" />
+                                        <button type="submit" class="btn btn-sm btn-icon btn-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ PARTY TAB ============ -->
+    <div class="tab-pane fade @(ViewBag.ActiveTab == "party" ? "show active" : "")" id="partyTab">
+        <div class="gw-card mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong><i class="bi bi-briefcase"></i> Add Party</strong>
+            </div>
+            <form asp-controller="MasterData" asp-action="AddParty" method="post" class="row g-2">
+                <div class="col-md-3">
+                    <input name="Name" class="form-control" placeholder="Party Name" required />
+                </div>
+                <div class="col-md-3">
+                    <input name="ContactPerson" class="form-control" placeholder="Contact Person" />
+                </div>
+                <div class="col-md-3">
+                    <input name="Mobile" class="form-control" placeholder="Mobile" required />
+                </div>
+                <div class="col-md-2">
+                    <select name="Status" class="form-select">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-lg"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="gw-card">
+            <div class="gw-table-wrap">
+                <table class="table table-striped gw-datatable">
+                    <thead>
+                        <tr><th>Name</th><th>Contact Person</th><th>Mobile</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.Parties)
+                        {
+                            <tr>
+                                <td>@p.Name</td>
+                                <td>@p.ContactPerson</td>
+                                <td>@p.Mobile</td>
+                                <td><span class="badge @(p.Status == GarmentWorkshop.Models.PartyStatus.Active ? "gw-badge-success" : "bg-secondary")">@p.Status</span></td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="modal" data-bs-target="#editPartyModal"
+                                            data-id="@p.Id" data-name="@p.Name" data-contact="@p.ContactPerson" data-mobile="@p.Mobile" data-status="@p.Status">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <form asp-controller="MasterData" asp-action="DeleteParty" method="post" class="d-inline" onsubmit="return confirm('Delete party @p.Name?');">
+                                        <input type="hidden" name="id" value="@p.Id" />
+                                        <button type="submit" class="btn btn-sm btn-icon btn-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ MACHINE TAB ============ -->
+    <div class="tab-pane fade @(ViewBag.ActiveTab == "machine" ? "show active" : "")" id="machineTab">
+        <div class="gw-card mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong><i class="bi bi-gear"></i> Add Machine</strong>
+            </div>
+            <form asp-controller="MasterData" asp-action="AddMachine" method="post" class="row g-2">
+                <div class="col-md-4">
+                    <input name="Name" class="form-control" placeholder="Machine Name (e.g. Juki 5)" required />
+                </div>
+                <div class="col-md-3">
+                    <select name="Type" class="form-select">
+                        <option value="Sewing">Sewing</option>
+                        <option value="Warlock">Warlock</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="Status" class="form-select">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-lg"></i> Add</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="gw-card">
+            <div class="gw-table-wrap">
+                <table class="table table-striped gw-datatable">
+                    <thead>
+                        <tr><th>Name</th><th>Type</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model.Machines)
+                        {
+                            <tr>
+                                <td>@m.Name</td>
+                                <td>@m.Type</td>
+                                <td><span class="badge @(m.Status == GarmentWorkshop.Models.MachineStatus.Active ? "gw-badge-success" : "bg-secondary")">@m.Status</span></td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-icon btn-secondary" data-bs-toggle="modal" data-bs-target="#editMachineModal"
+                                            data-id="@m.Id" data-name="@m.Name" data-type="@m.Type" data-status="@m.Status">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <form asp-controller="MasterData" asp-action="DeleteMachine" method="post" class="d-inline" onsubmit="return confirm('Delete machine @m.Name?');">
+                                        <input type="hidden" name="id" value="@m.Id" />
+                                        <button type="submit" class="btn btn-sm btn-icon btn-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ============ EDIT WORKER MODAL ============ -->
+<div class="modal fade" id="editWorkerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="MasterData" asp-action="EditWorker" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-pencil"></i> Edit Worker</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="Id" id="editWorkerId" />
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="Name" id="editWorkerName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" name="Phone" id="editWorkerPhone" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="Status" id="editWorkerStatus" class="form-select">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ============ EDIT PARTY MODAL ============ -->
+<div class="modal fade" id="editPartyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="MasterData" asp-action="EditParty" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-pencil"></i> Edit Party</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="Id" id="editPartyId" />
+                    <div class="mb-3">
+                        <label class="form-label">Party Name</label>
+                        <input type="text" name="Name" id="editPartyName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contact Person</label>
+                        <input type="text" name="ContactPerson" id="editPartyContact" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mobile</label>
+                        <input type="text" name="Mobile" id="editPartyMobile" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="Status" id="editPartyStatus" class="form-select">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ============ EDIT MACHINE MODAL ============ -->
+<div class="modal fade" id="editMachineModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="MasterData" asp-action="EditMachine" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-pencil"></i> Edit Machine</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="Id" id="editMachineId" />
+                    <div class="mb-3">
+                        <label class="form-label">Machine Name</label>
+                        <input type="text" name="Name" id="editMachineName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Type</label>
+                        <select name="Type" id="editMachineType" class="form-select">
+                            <option value="Sewing">Sewing</option>
+                            <option value="Warlock">Warlock</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="Status" id="editMachineStatus" class="form-select">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Worker edit modal — populate fields from clicked row's data attributes
+        document.getElementById('editWorkerModal').addEventListener('show.bs.modal', function (event) {
+            var btn = event.relatedTarget;
+            document.getElementById('editWorkerId').value = btn.getAttribute('data-id');
+            document.getElementById('editWorkerName').value = btn.getAttribute('data-name');
+            document.getElementById('editWorkerPhone').value = btn.getAttribute('data-phone');
+            document.getElementById('editWorkerStatus').value = btn.getAttribute('data-status');
+        });
+
+        // Party edit modal
+        document.getElementById('editPartyModal').addEventListener('show.bs.modal', function (event) {
+            var btn = event.relatedTarget;
+            document.getElementById('editPartyId').value = btn.getAttribute('data-id');
+            document.getElementById('editPartyName').value = btn.getAttribute('data-name');
+            document.getElementById('editPartyContact').value = btn.getAttribute('data-contact');
+            document.getElementById('editPartyMobile').value = btn.getAttribute('data-mobile');
+            document.getElementById('editPartyStatus').value = btn.getAttribute('data-status');
+        });
+
+        // Machine edit modal
+        document.getElementById('editMachineModal').addEventListener('show.bs.modal', function (event) {
+            var btn = event.relatedTarget;
+            document.getElementById('editMachineId').value = btn.getAttribute('data-id');
+            document.getElementById('editMachineName').value = btn.getAttribute('data-name');
+            document.getElementById('editMachineType').value = btn.getAttribute('data-type');
+            document.getElementById('editMachineStatus').value = btn.getAttribute('data-status');
+        });
+
+        // Fix: recalculate DataTables column widths when a hidden tab becomes visible.
+        // Without this, tables inside inactive tabs render with squished/broken columns
+        // because DataTables can't measure a table that's display:none on page load.
+        document.querySelectorAll('#masterDataTabs button[data-bs-toggle="tab"]').forEach(function (tabBtn) {
+            tabBtn.addEventListener('shown.bs.tab', function () {
+                if (typeof jQuery !== 'undefined' && jQuery.fn.DataTable) {
+                    jQuery.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+                }
+            });
+        });
+    });
+</script>

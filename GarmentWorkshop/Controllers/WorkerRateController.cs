@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GarmentWorkshop.EF;
 using GarmentWorkshop.Models;
+using GarmentWorkshop.ViewModels;
 
 namespace GarmentWorkshop.Controllers;
 
@@ -18,13 +19,52 @@ public class WorkerRateController : Controller
     // GET: /WorkerRate
     public async Task<IActionResult> Index()
     {
-        var rates = await _context.WorkerRates
+        var allRates = await _context.WorkerRates
             .Include(wr => wr.Worker)
             .Include(wr => wr.Garment)
             .OrderByDescending(wr => wr.EffectiveFrom)
             .ToListAsync();
 
-        return View(rates);
+        var today = DateTime.Today;
+
+        var currentRates = new List<WorkerRate>();
+        var historyRates = new List<WorkerRate>();
+        var upcomingRates = new List<WorkerRate>();
+
+        // Group by Worker+Garment combo to find each combo's "currently applicable" rate
+        var groups = allRates.GroupBy(r => new { r.WorkerId, r.GarmentId });
+
+        foreach (var group in groups)
+        {
+            // The rate with the latest EffectiveFrom that is <= today is the "current" one
+            var current = group
+                .Where(r => r.EffectiveFrom <= today)
+                .OrderByDescending(r => r.EffectiveFrom)
+                .FirstOrDefault();
+
+            if (current != null)
+                currentRates.Add(current);
+
+            foreach (var rate in group)
+            {
+                if (current != null && rate.Id == current.Id)
+                    continue; // already placed in currentRates
+
+                if (rate.EffectiveFrom > today)
+                    upcomingRates.Add(rate);
+                else
+                    historyRates.Add(rate);
+            }
+        }
+
+        var vm = new WorkerRateListViewModel
+        {
+            CurrentRates = currentRates.OrderBy(r => r.Worker.Name).ThenBy(r => r.Garment.Name).ToList(),
+            UpcomingRates = upcomingRates.OrderBy(r => r.EffectiveFrom).ToList(),
+            HistoryRates = historyRates.OrderByDescending(r => r.EffectiveFrom).ToList()
+        };
+
+        return View(vm);
     }
 
     // GET: /WorkerRate/Create

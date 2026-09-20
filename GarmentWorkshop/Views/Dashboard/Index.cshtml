@@ -179,8 +179,8 @@
                         <td>@wo.PartyName</td>
                         <td>@wo.GarmentName</td>
                         <td>@wo.TotalPieces</td>
-                        <td>@wo.CompletedPieces</td>
-                        <td>@wo.PendingPieces</td>
+                        <td class="text-success">@wo.CompletedPieces</td>
+                        <td class="@(wo.PendingPieces == 0 ? "text-success" : "text-danger") fw-semibold">@wo.PendingPieces</td>
                     </tr>
                 }
             </tbody>

@@ -36,9 +36,22 @@
 
             <div class="col-md-6 gw-field">
                 <label class="form-label">Garment</label>
+                <div class="d-flex gap-2">
+                    <div class="gw-field-icon flex-grow-1">
+                        <i class="bi bi-bag"></i>
+                        <select asp-for="GarmentId" id="GarmentId" class="form-select" asp-items="ViewBag.GarmentId"></select>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#quickAddGarmentModal" title="Add new garment">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-6 gw-field">
+                <label class="form-label">Style / Color (optional)</label>
                 <div class="gw-field-icon">
-                    <i class="bi bi-bag"></i>
-                    <select asp-for="GarmentId" class="form-select" asp-items="ViewBag.GarmentId"></select>
+                    <i class="bi bi-palette"></i>
+                    <input asp-for="StyleOrColor" class="form-control" placeholder="e.g. Red Floral, Style A102" />
                 </div>
             </div>
 
@@ -89,3 +102,5 @@
         </div>
     </form>
 </div>
+
+@await Html.PartialAsync("_QuickAddGarmentModal")
